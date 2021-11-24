@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+C:\Users\ilva\Dropbox\TIKO\SWD4TA033-3008\Viikko4\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+374088388.index
+1784503275.index
+1120479854.index
+2032058270.index
+419181419.index
+2993656568.index
+1857450689.index
