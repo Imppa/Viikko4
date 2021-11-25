@@ -6,10 +6,20 @@
 <meta charset="ISO-8859-1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
+<style>
+.oikealle{
+	text-aling: right;
+}
+</style>
 </head>
 <body>
-<table id="listaus">
+<table id="listaus" border="1">
 		<thead>
+			<tr>
+				<th class="oikealle">Hakusana:</th>
+				<th colspan="2"><input type="text" id="hakusana"></th>
+				<th><input type="button" value="hae" id="hakunappi"></th>
+			</tr>
 			<tr>
 				<th>Etunimi</th>
 				<th>Sukunimi</th>
@@ -22,8 +32,23 @@
 </table>
 <script>
 $(document).ready(function() {
+
+	haeAsiakkaat();
+	$("#hakunappi").click(function(){
+		haeAsiakkaat();
+	});
+	$(document.body).on("keydown", function(event){
+		if(event.which==13) { //Kirjaimet lajiteltu numeroittain, 13=Enter
+			haeAsiakkaat();
+		}
+	});
+	$("#hakusana").focus();//Kursori oikeaan paikkaan
+});
+
+function haeAsiakkaat(){
+	$("#listaus tbody").empty();
 	$.ajax({
-		url:"asiakkaat", 
+		url:"asiakkaat/"+$("#hakusana").val(), 
 		type:"GET", 
 		dataType:"json", 
 		success:function(result) {
@@ -37,8 +62,10 @@ $(document).ready(function() {
 			htmlStr+="</tr>";
 			$("#listaus tbody").append(htmlStr);
 		});
-	}});
-});
+	}});		
+}
+
+
 
 </script>
 </body>
