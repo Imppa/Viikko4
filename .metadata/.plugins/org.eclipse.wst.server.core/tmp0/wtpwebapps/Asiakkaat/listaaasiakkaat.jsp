@@ -7,24 +7,39 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
-.oikealle{
-	text-aling: right;
+
+.Haku{
+text-align: center;
+height:175%;
+
 }
+
+.kentta{
+text-align: left;
+width: 75px;
+
+}
+
+.block{
+width:75px;
+}
+
+
 </style>
 </head>
 <body>
-<table id="listaus" border="1">
+<table id="listaus">
 		<thead>
-			<tr>
-				<th class="oikealle">Hakusana:</th>
-				<th colspan="2"><input type="text" id="hakusana"></th>
-				<th><input type="button" value="hae" id="hakunappi"></th>
+			<tr style="outline: thin solid">
+				<th class="Haku" colspan="2">Hakusana:</th>
+				<th colspan="1"><input type="text" id="hakusana"></th>
+				<th><input type="button" class="block" value="Hae" id="hakunappi"></th>
 			</tr>
 			<tr>
-				<th>Etunimi</th>
-				<th>Sukunimi</th>
-				<th>Puhelin</th>
-				<th>Sposti</th>
+				<th class="kentta">Etunimi</th>
+				<th class="kentta">Sukunimi</th>
+				<th class="kentta">Puhelin</th>
+				<th class="kentta">Sposti</th>
 			</tr>
 		</thead>
 		<tbody>
