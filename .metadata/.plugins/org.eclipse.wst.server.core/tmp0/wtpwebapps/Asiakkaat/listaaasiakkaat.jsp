@@ -5,82 +5,72 @@
 <head>
 <meta charset="ISO-8859-1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<title>Insert title here</title>
-<style>
-
-.Haku{
-text-align: center;
-height:175%;
-
-}
-
-.kentta{
-text-align: left;
-width: 75px;
-
-}
-
-.block{
-width:75px;
-}
-
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>Asiakkaiden listaus</title>
 </head>
 <body>
-<table id="listaus">
-		<thead>
-			<tr style="outline: thin solid">
-				<th class="Haku" colspan="2">Hakusana:</th>
-				<th colspan="1"><input type="text" id="hakusana"></th>
-				<th><input type="button" class="block" value="Hae" id="hakunappi"></th>
-			</tr>
+	<table id="listaus">
+		<thead>	
 			<tr>
-				<th class="kentta">Etunimi</th>
-				<th class="kentta">Sukunimi</th>
-				<th class="kentta">Puhelin</th>
-				<th class="kentta">Sposti</th>
+				<th colspan="2" class="oikealle">Hakusana:</th>
+				<th><input type="text" id="hakusana"></th>
+				<th><input type="button" id="hae" value="Hae"></th>
+			</tr>		
+			<tr>
+				<th>Etunimi</th>
+				<th>Sukunimi</th>
+				<th>Puhelin</th>
+				<th>Sposti</th>		
+				<th></th>		
 			</tr>
 		</thead>
 		<tbody>
-		</tbody>	
-</table>
+		</tbody>
+	</table>
 <script>
-$(document).ready(function() {
-
-	haeAsiakkaat();
-	$("#hakunappi").click(function(){
-		haeAsiakkaat();
-	});
+$(document).ready(function(){	
 	$(document.body).on("keydown", function(event){
-		if(event.which==13) { //Kirjaimet lajiteltu numeroittain, 13=Enter
-			haeAsiakkaat();
-		}
+		  if(event.which==13){ //Enteriä painettu, ajetaan haku
+			  haeTiedot();
+		  }
+	});	
+	$("#hae").click(function(){	
+		haeTiedot();
 	});
-	$("#hakusana").focus();//Kursori oikeaan paikkaan
+	$("#hakusana").focus();//viedään kursori hakusana-kenttään sivun latauksen yhteydessä
+	haeTiedot();
 });
-
-function haeAsiakkaat(){
+function haeTiedot(){	
 	$("#listaus tbody").empty();
-	$.ajax({
-		url:"asiakkaat/"+$("#hakusana").val(), 
-		type:"GET", 
-		dataType:"json", 
-		success:function(result) {
-		$.each(result.asiakkaat, function(i, field) {
-			var htmlStr;
-			htmlStr+="<tr>";
-			htmlStr+="<td>"+field.etunimi+"</td>";
-			htmlStr+="<td>"+field.sukunimi+"</td>";
-			htmlStr+="<td>"+field.puhelin+"</td>";
-			htmlStr+="<td>"+field.sposti+"</td>";
-			htmlStr+="</tr>";
-			$("#listaus tbody").append(htmlStr);
-		});
-	}});		
+	//$.getJSON on $.ajax:n alifunktio, joka on erikoistunut jsonin hakemiseen. Kumpaakin voi tässä käyttää.
+	//$.getJSON({url:"asiakkaat/"+$("#hakusana").val(), type:"GET", success:function(result){
+	$.ajax({url:"asiakkaat/"+$("#hakusana").val(), type:"GET", dataType:"json", success:function(result){
+		$.each(result.asiakkaat, function(i, field){  
+        	var htmlStr;
+        	htmlStr+="<tr>"; 
+        	htmlStr+="<td>"+field.etunimi+"</td>";
+        	htmlStr+="<td>"+field.sukunimi+"</td>";
+        	htmlStr+="<td>"+field.puhelin+"</td>";
+        	htmlStr+="<td>"+field.sposti+"</td>";  
+        	htmlStr+="<td><span class='poista' onclick=poista('"+field.asiakas_id+"')>Poista</span></td>";
+        	htmlStr+="</tr>";
+        	$("#listaus tbody").append(htmlStr);
+        });
+    }});	
 }
-
-
+function poista(asiakas_id){
+	if(confirm("Poista asiakas " + asiakas_id +"?")){
+		$.ajax({url:"asiakkaat/"+asiakas_id, type:"DELETE", dataType:"json", success:function(result) { 
+	        if(result.response==0){
+	        	$("#ilmo").html("Asiakkaan poisto epäonnistui.");
+	        }else if(result.response==1){
+	        	$("#rivi_"+rekno).css("background-color", "red"); 
+	        	alert("Asiakkaan " + asiakas_id +" poisto onnistui.");
+				haeAsiakkaat();        	
+			}
+	    }});
+	}
+}
 
 </script>
 </body>

@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="scripts/main.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>Insert title here</title>
+</head>
+<body>
+<form id="tiedot">
+	<table>
+		<thead>			
+			<tr>
+				<th>RekNo</th>
+				<th>Merkki</th>
+				<th>Malli</th>
+				<th>Vuosi</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="text" name="rekNo" id="rekNo"></td>
+				<td><input type="text" name="merkki" id="merkki"></td>
+				<td><input type="text" name="malli" id="malli"></td>
+				<td><input type="text" name="vuosi" id="vuosi"></td> 
+				<td><input type="submit" id="tallenna" value="Lisää"></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+</body>
+<script>
+$(document).ready(function(){
+	$("#tiedot").validate({						
+		rules: {
+			rekNo:  {
+				required: true,
+				minlength: 3				
+			},	
+			merkki:  {
+				required: true,
+				minlength: 2				
+			},
+			malli:  {
+				required: true,
+				minlength: 1
+			},	
+			vuosi:  {
+				required: true,
+				number: true,
+				minlength: 4,
+				maxlength: 4,
+				min: 1900,
+				max: new Date().getFullYear()+1 //Auto voi olla ensivuoden mallia
+			}	
+		},
+		messages: {
+			rekNo: {     
+				required: "Puuttuu",
+				minlength: "Liian lyhyt"			
+			},
+			merkki: {
+				required: "Puuttuu",
+				minlength: "Liian lyhyt"
+			},
+			malli: {
+				required: "Puuttuu",
+				minlength: "Liian lyhyt"
+			},
+			vuosi: {
+				required: "Puuttuu",
+				number: "Ei kelpaa",
+				minlength: "Liian lyhyt",
+				maxlength: "Liian pitkä",
+				min: "Liian pieni",
+				max: "Liian suuri"
+			}
+		},			
+		submitHandler: function(form) {	
+			lisaaTiedot();
+		}		
+	}); 	
+});
+</script>
+</html>
